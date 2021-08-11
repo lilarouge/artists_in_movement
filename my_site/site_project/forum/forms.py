@@ -4,9 +4,9 @@ from .models import *
 class CreateADiscussion(ModelForm):
     class Meta:
         model= Discussion
-        fields = ("topic", "text")
+        fields = ("name","topic", "text")
  
 class CreateInComment(ModelForm):
     class Meta:
         model= Comment
-        fields = ("content",)
+        fields = ("name","content",)

@@ -3,7 +3,6 @@ from django.db import models
 
 class Discussion(models.Model):
     name= models.CharField(max_length=30)
-    # forum = models.ForeignKey(Forum,on_delete=models.CASCADE)
     topic= models.CharField(max_length=300, null=True)
     text = models.CharField(max_length=1000)
 
