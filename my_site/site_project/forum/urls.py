@@ -1,9 +1,11 @@
 from django.urls import path
-from forum.views import *
+from . import views
 
 urlpatterns = [
-    path('',home,name='home'),
-    path('addInForum/',addInForum,name='addInForum'),
-    path('addInDiscussion/',addInDiscussion,name='addInDiscussion'),
+    path('',views.home,name='home'),
+    path('addADiscussion/',views.addADiscussion,name='addADiscussion'),
+    path('addAComment/<int:pk>',views.addAComment,name='addAComment'),
+    path('single_discussion/<int:discussion_id>', views.single_discussion, name='single_discussion'),
+
 
 ]

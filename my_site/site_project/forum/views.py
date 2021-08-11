@@ -4,33 +4,48 @@ from .forms import *
 # Create your views here.
  
 def home(request):
-    forums=forum.objects.all()
-    count=forums.count()
-    discussions=[]
-    for i in forums:
-        discussions.append(i.discussion_set.all())
+    discussions=Discussion.objects.all()
+    count=discussions.count()
  
-    context={'forums':forums,
+    context={
               'count':count,
-              'discussions':discussions}
+              'discussions':discussions
+              }
     return render(request,'home.html',context)
  
-def addInForum(request):
-    form = CreateInForum()
+def addADiscussion(request):
+    form = CreateADiscussion()
     if request.method == 'POST':
-        form = CreateInForum(request.POST)
+        form = CreateADiscussion(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('/')
+# Adding the profile inside the add discussion
+            discussion= form.save(commit=False)
+            discussion.save()
+            return redirect('home')
     context ={'form':form}
-    return render(request,'addInForum.html',context)
+    return render(request,'forum/addInForum.html',context)
  
-def addInDiscussion(request):
-    form = CreateInDiscussion()
+def addAComment(request,pk):
+    discussion= Discussion.objects.get(id=pk)
+    form = CreateInComment()
     if request.method == 'POST':
-        form = CreateInDiscussion(request.POST)
+        form = CreateInComment(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('/')
+# adding the profile inside the add comment           
+# adding the discussion on the comment
+            comment= form.save(commit=False)
+            comment.discussion= discussion
+            comment.save()
+            return redirect('home')
     context ={'form':form}
-    return render(request,'addInDiscussion.html',context)
+    return render(request,'forum/addInDiscussion.html',context)
+
+
+def single_discussion(request, discussion_id):
+    discussion = Discussion.objects.get(id=discussion_id)
+    
+    
+    context= {'discussion': discussion,
+                 
+                }
+    return render(request, 'forum/single_discussion.html', context)
